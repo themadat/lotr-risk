@@ -5,17 +5,786 @@ TECHDEBT: Make it prettier in Big and BIGGER modes
 -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lord of the Rings Risk Battle</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lord of the Rings Risk Battle Simulator</title>
+  <style>
+    :root {
+      --bg: #0f0d0a;
+      --panel: #1a1611;
+      --panel-2: #241d15;
+      --accent: #b08d57;
+      --accent-2: #d7b57a;
+      --text: #eee5d0;
+      --muted: #b8aa8b;
+      --evil: #9e3b2f;
+      --good: #6f8f62;
+      --line: #4c3d27;
+      --win: #3f7f4f;
+      --lose: #8b3535;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(176,141,87,0.08), transparent 35%),
+        linear-gradient(180deg, #15110c, var(--bg));
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(36,29,21,0.95), rgba(20,16,12,0.95));
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "One ring to rule the dice";
+      position: absolute;
+      right: 18px;
+      bottom: 12px;
+      color: rgba(215,181,122,0.14);
+      font-size: 24px;
+      letter-spacing: 1px;
+      pointer-events: none;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px 0;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--accent-2);
+    }
+
+    p { line-height: 1.5; }
+    .muted { color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr 360px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(36,29,21,0.97), rgba(20,16,12,0.97));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .subgrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    input, select, button, textarea {
+      font: inherit;
+      color: var(--text);
+      background: #100d09;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    button {
+      cursor: pointer;
+      transition: 0.18s ease;
+      background: linear-gradient(180deg, #6a522f, #46351d);
+      border-color: #9a7b4b;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button.secondary {
+      background: linear-gradient(180deg, #2a241b, #1a1611);
+      border-color: var(--line);
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.18);
+      margin: 0 8px 8px 0;
+    }
+
+    .good { color: #cbe1bf; }
+    .evil { color: #f0afa4; }
+
+    .battlefield {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .side {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(0,0,0,0.16);
+    }
+
+    .side.good-side { box-shadow: inset 0 0 0 1px rgba(111,143,98,0.15); }
+    .side.evil-side { box-shadow: inset 0 0 0 1px rgba(158,59,47,0.18); }
+
+    .versus {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--accent-2);
+      text-shadow: 0 0 18px rgba(215,181,122,0.16);
+    }
+
+    .statline {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .stat {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      color: var(--accent-2);
+      margin-top: 4px;
+    }
+
+    .dice-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 60px;
+      margin-top: 12px;
+    }
+
+    .die {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      background: #f2ead7;
+      color: #16120d;
+      border: 2px solid #e0d1af;
+      position: relative;
+    }
+
+    .die.bad { background: #27211b; color: #efe5d0; border-color: #7e6c4f; }
+    .die .bonus {
+      position: absolute;
+      right: -6px;
+      top: -8px;
+      background: var(--accent);
+      color: #1a130b;
+      border-radius: 999px;
+      padding: 2px 6px;
+      font-size: 12px;
+      border: 1px solid #f4d39c;
+    }
+
+    .log {
+      max-height: 640px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .entry {
+      border-left: 3px solid var(--line);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: rgba(0,0,0,0.12);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .entry.win { border-left-color: var(--win); }
+    .entry.lose { border-left-color: var(--lose); }
+
+    .summary-box {
+      border: 1px dashed #87683b;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 12px;
+      background: rgba(176,141,87,0.07);
+    }
+
+    .rules {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1200px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 800px) {
+      .battlefield, .rules, .subgrid, .statline { grid-template-columns: 1fr; }
+      .versus { min-height: 60px; }
+    }
+  </style>
 </head>
-
 <body>
-    
-</body>
+  <div class="app">
+    <section class="hero">
+      <h1>Lord of the Rings Risk Battle Simulator</h1>
+      <p class="muted">
+        A themed simulator for the Trilogy Edition combat system. It applies the rulebook’s battle rules,
+        including attacker and defender dice limits, defender-wins-ties, leader bonuses, stronghold defense,
+        capture movement requirements, and full invasion resolution.
+      </p>
+      <div class="row">
+        <div class="pill"><span>Attacker rolls</span><strong>1–3 red dice</strong></div>
+        <div class="pill"><span>Defender rolls</span><strong>1–2 black dice</strong></div>
+        <div class="pill"><span>Tie rule</span><strong>Defender wins</strong></div>
+        <div class="pill"><span>Leader / Stronghold</span><strong>+1 to highest die</strong></div>
+      </div>
+    </section>
 
+    <section class="grid">
+      <aside class="panel">
+        <h2>Scenario Setup</h2>
+        <div class="subgrid">
+          <div class="field">
+            <label for="attackerName">Attacker Name</label>
+            <input id="attackerName" value="Free Peoples" />
+          </div>
+          <div class="field">
+            <label for="defenderName">Defender Name</label>
+            <input id="defenderName" value="Shadow" />
+          </div>
+          <div class="field">
+            <label for="attackerForce">Attacker Alignment</label>
+            <select id="attackerForce">
+              <option value="good">Good</option>
+              <option value="evil">Evil</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="defenderForce">Defender Alignment</label>
+            <select id="defenderForce">
+              <option value="evil" selected>Evil</option>
+              <option value="good">Good</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="attackers">Battalions in Attacking Territory</label>
+          <input id="attackers" type="number" min="2" max="999" value="12" />
+        </div>
+        <div class="field">
+          <label for="defenders">Battalions in Defending Territory</label>
+          <input id="defenders" type="number" min="1" max="999" value="7" />
+        </div>
+
+        <div class="subgrid">
+          <div class="field">
+            <label for="attackerDice">Attack Dice This Battle</label>
+            <select id="attackerDice">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="defenderDiceMode">Defender Dice</label>
+            <select id="defenderDiceMode">
+              <option value="auto" selected>Auto (max legal)</option>
+              <option value="1">Always 1</option>
+              <option value="2">Always 2 if legal</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="moveAfterCapture">Extra battalions to move after capture</label>
+          <input id="moveAfterCapture" type="number" min="0" max="999" value="0" />
+        </div>
+
+        <div class="summary-box">
+          <div class="row" style="justify-content:space-between;">
+            <label class="pill"><input id="attackerLeader" type="checkbox" /> Attacker Leader in battle</label>
+            <label class="pill"><input id="defenderLeader" type="checkbox" /> Defender Leader present</label>
+          </div>
+          <div class="row" style="justify-content:space-between; margin-top:8px;">
+            <label class="pill"><input id="defenderStronghold" type="checkbox" /> Defender Stronghold</label>
+            <label class="pill"><input id="autoContinue" type="checkbox" checked /> Continue invasion until end</label>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 14px;">
+          <button id="rollBtn">Roll One Battle</button>
+          <button id="resolveBtn">Resolve Full Invasion</button>
+          <button id="resetBtn" class="secondary">Reset</button>
+        </div>
+
+        <div class="summary-box">
+          <h3>Rule Engine Notes</h3>
+          <ul>
+            <li>You must have at least 2 battalions in the attacking territory to attack.</li>
+            <li>You can send 1, 2, or 3 battalions into a battle, but never more than the territory can spare.</li>
+            <li>The defender can roll with 1 or 2 battalions, up to the number present.</li>
+            <li>Leader and stronghold bonuses stack on the defender’s highest die; a defender leader plus stronghold gives +2.</li>
+            <li>After a successful invasion, surviving attacking battalions from the final battle must move in first.</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="panel">
+        <h2>Battlefield</h2>
+        <div class="battlefield">
+          <section class="side good-side" id="attackerPanel">
+            <h3 id="attackerDisplay">Free Peoples</h3>
+            <div class="statline">
+              <div class="stat">
+                Battalions
+                <strong id="attackerCount">12</strong>
+              </div>
+              <div class="stat">
+                Available to attack
+                <strong id="attackerAvailable">11</strong>
+              </div>
+            </div>
+            <div class="muted">Current attack dice</div>
+            <div class="dice-row" id="attackDiceRow"></div>
+          </section>
+
+          <div class="versus">VS</div>
+
+          <section class="side evil-side" id="defenderPanel">
+            <h3 id="defenderDisplay">Shadow</h3>
+            <div class="statline">
+              <div class="stat">
+                Battalions
+                <strong id="defenderCount">7</strong>
+              </div>
+              <div class="stat">
+                Defense dice
+                <strong id="defenderAvailable">2</strong>
+              </div>
+            </div>
+            <div class="muted">Current defense dice</div>
+            <div class="dice-row" id="defenseDiceRow"></div>
+          </section>
+        </div>
+
+        <div class="summary-box" id="outcomeBox">
+          Awaiting the first battle.
+        </div>
+
+        <div class="rules">
+          <div>
+            <h3>Combat Rules Modeled</h3>
+            <ul>
+              <li>Attacker compares highest die to defender highest die, then next-highest against next-highest.</li>
+              <li>Only as many comparisons as the smaller dice pool.</li>
+              <li>In ties, the defender wins.</li>
+              <li>Bonuses modify only the side’s single highest die for that battle.</li>
+              <li>Attack ends if the attacker stops, cannot continue, or loses all battalions except one in the origin territory.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Capture Resolution</h3>
+            <ul>
+              <li>When defenders are eliminated, the territory is conquered immediately.</li>
+              <li>All surviving attackers from the last battle move in automatically.</li>
+              <li>Optional extra battalions may also move in, but at least one battalion must remain behind in the origin territory.</li>
+              <li>This app focuses on battle resolution, not region scoring, card draws, fellowship movement, or mission/adventure card play.</li>
+            </ul>
+          </div>
+        </div>
+      </main>
+
+      <aside class="panel">
+        <h2>Battle Log</h2>
+        <div id="log" class="log"></div>
+        <div class="footer-note">
+          Recommended use: test exact battles, compare leader/stronghold outcomes, or run repeated invasions by changing the setup and pressing <em>Resolve Full Invasion</em>.
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script>
+    const state = {
+      attackers: 12,
+      defenders: 7,
+      territoryCaptured: false,
+      battleNumber: 0,
+      originInitial: 12,
+      invasionEnded: false,
+      movedAfterCapture: 0,
+      lastBattleAttackersCommitted: 0,
+      lastBattleAttackerLosses: 0
+    };
+
+    const els = {
+      attackerName: document.getElementById('attackerName'),
+      defenderName: document.getElementById('defenderName'),
+      attackerForce: document.getElementById('attackerForce'),
+      defenderForce: document.getElementById('defenderForce'),
+      attackers: document.getElementById('attackers'),
+      defenders: document.getElementById('defenders'),
+      attackerDice: document.getElementById('attackerDice'),
+      defenderDiceMode: document.getElementById('defenderDiceMode'),
+      moveAfterCapture: document.getElementById('moveAfterCapture'),
+      attackerLeader: document.getElementById('attackerLeader'),
+      defenderLeader: document.getElementById('defenderLeader'),
+      defenderStronghold: document.getElementById('defenderStronghold'),
+      autoContinue: document.getElementById('autoContinue'),
+      rollBtn: document.getElementById('rollBtn'),
+      resolveBtn: document.getElementById('resolveBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      attackerDisplay: document.getElementById('attackerDisplay'),
+      defenderDisplay: document.getElementById('defenderDisplay'),
+      attackerCount: document.getElementById('attackerCount'),
+      defenderCount: document.getElementById('defenderCount'),
+      attackerAvailable: document.getElementById('attackerAvailable'),
+      defenderAvailable: document.getElementById('defenderAvailable'),
+      attackDiceRow: document.getElementById('attackDiceRow'),
+      defenseDiceRow: document.getElementById('defenseDiceRow'),
+      outcomeBox: document.getElementById('outcomeBox'),
+      log: document.getElementById('log'),
+      attackerPanel: document.getElementById('attackerPanel'),
+      defenderPanel: document.getElementById('defenderPanel')
+    };
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function randDie() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
+
+    function forceClass(force) {
+      return force === 'good' ? 'good' : 'evil';
+    }
+
+    function syncStateFromInputs(resetBattleState = false) {
+      state.attackers = clamp(parseInt(els.attackers.value || '2', 10), 2, 999);
+      state.defenders = clamp(parseInt(els.defenders.value || '1', 10), 1, 999);
+      els.attackers.value = state.attackers;
+      els.defenders.value = state.defenders;
+
+      if (resetBattleState) {
+        state.territoryCaptured = false;
+        state.battleNumber = 0;
+        state.originInitial = state.attackers;
+        state.invasionEnded = false;
+        state.movedAfterCapture = 0;
+        state.lastBattleAttackersCommitted = 0;
+        state.lastBattleAttackerLosses = 0;
+        els.log.innerHTML = '';
+        els.attackDiceRow.innerHTML = '';
+        els.defenseDiceRow.innerHTML = '';
+        els.outcomeBox.textContent = 'Awaiting the first battle.';
+      }
+
+      updateView();
+    }
+
+    function legalAttackDice() {
+      return clamp(parseInt(els.attackerDice.value, 10), 1, Math.min(3, state.attackers - 1));
+    }
+
+    function legalDefenseDice() {
+      const defendersCanRoll = Math.min(2, state.defenders);
+      const mode = els.defenderDiceMode.value;
+      if (mode === 'auto') {
+        return defendersCanRoll;
+      }
+      return clamp(parseInt(mode, 10), 1, defendersCanRoll);
+    }
+
+    function createDieEl(value, dark = false, bonus = 0) {
+      const die = document.createElement('div');
+      die.className = 'die' + (dark ? ' bad' : '');
+      die.textContent = value;
+      if (bonus > 0) {
+        const b = document.createElement('span');
+        b.className = 'bonus';
+        b.textContent = '+' + bonus;
+        die.appendChild(b);
+      }
+      return die;
+    }
+
+    function updateView(lastRoll = null) {
+      els.attackerDisplay.textContent = els.attackerName.value || 'Attacker';
+      els.defenderDisplay.textContent = els.defenderName.value || 'Defender';
+      els.attackerCount.textContent = state.attackers;
+      els.defenderCount.textContent = state.defenders;
+      els.attackerAvailable.textContent = Math.max(0, state.attackers - 1);
+      els.defenderAvailable.textContent = Math.min(2, state.defenders);
+
+      els.attackerPanel.className = 'side ' + (els.attackerForce.value === 'good' ? 'good-side' : 'evil-side');
+      els.defenderPanel.className = 'side ' + (els.defenderForce.value === 'good' ? 'good-side' : 'evil-side');
+
+      if (lastRoll) {
+        els.attackDiceRow.innerHTML = '';
+        els.defenseDiceRow.innerHTML = '';
+        lastRoll.attackDiceRaw.forEach((value, index) => {
+          const bonus = index === 0 ? lastRoll.attackerBonus : 0;
+          els.attackDiceRow.appendChild(createDieEl(value, false, bonus));
+        });
+        lastRoll.defenseDiceRaw.forEach((value, index) => {
+          const bonus = index === 0 ? lastRoll.defenderBonus : 0;
+          els.defenseDiceRow.appendChild(createDieEl(value, true, bonus));
+        });
+      }
+    }
+
+    function logEntry(html, cls = '') {
+      const div = document.createElement('div');
+      div.className = 'entry ' + cls;
+      div.innerHTML = html;
+      els.log.prepend(div);
+    }
+
+    function battleOnce() {
+      if (state.territoryCaptured || state.invasionEnded) {
+        els.outcomeBox.textContent = 'The invasion is already over. Reset to begin a new one.';
+        return null;
+      }
+
+      if (state.attackers < 2) {
+        state.invasionEnded = true;
+        els.outcomeBox.textContent = 'The attacker cannot continue. At least one battalion must remain in the origin territory.';
+        return null;
+      }
+
+      const attackDiceCount = Math.min(legalAttackDice(), state.attackers - 1);
+      const defenseDiceCount = legalDefenseDice();
+      const attackDiceRaw = Array.from({ length: attackDiceCount }, randDie).sort((a, b) => b - a);
+      const defenseDiceRaw = Array.from({ length: defenseDiceCount }, randDie).sort((a, b) => b - a);
+
+      const attackerBonus = els.attackerLeader.checked ? 1 : 0;
+      let defenderBonus = 0;
+      if (els.defenderLeader.checked) {
+        defenderBonus += 1;
+      }
+      if (els.defenderStronghold.checked) {
+        defenderBonus += 1;
+      }
+
+      const attackDice = [...attackDiceRaw];
+      const defenseDice = [...defenseDiceRaw];
+      if (attackDice.length > 0) {
+        attackDice[0] += attackerBonus;
+      }
+      if (defenseDice.length > 0) {
+        defenseDice[0] += defenderBonus;
+      }
+
+      const comparisons = Math.min(attackDice.length, defenseDice.length);
+      let attackerLosses = 0;
+      let defenderLosses = 0;
+      const compareLines = [];
+
+      for (let i = 0; i < comparisons; i += 1) {
+        const a = attackDice[i];
+        const d = defenseDice[i];
+        if (a > d) {
+          defenderLosses += 1;
+          compareLines.push(`Compare ${i + 1}: ${a} beats ${d} — defender loses 1 battalion.`);
+        } else {
+          attackerLosses += 1;
+          compareLines.push(`Compare ${i + 1}: ${a} vs ${d} — defender wins ties, so attacker loses 1 battalion.`);
+        }
+      }
+
+      state.attackers -= attackerLosses;
+      state.defenders -= defenderLosses;
+      state.battleNumber += 1;
+      state.lastBattleAttackersCommitted = attackDiceCount;
+      state.lastBattleAttackerLosses = attackerLosses;
+
+      const result = {
+        attackDiceRaw,
+        defenseDiceRaw,
+        attackerBonus,
+        defenderBonus,
+        attackDiceCount,
+        defenseDiceCount,
+        attackerLosses,
+        defenderLosses,
+        compareLines
+      };
+
+      updateView(result);
+
+      const attackerStyled = `<span class="${forceClass(els.attackerForce.value)}">${els.attackerName.value || 'Attacker'}</span>`;
+      const defenderStyled = `<span class="${forceClass(els.defenderForce.value)}">${els.defenderName.value || 'Defender'}</span>`;
+
+      let outcome = `${attackerStyled} rolled [${attackDice.join(', ')}] and ${defenderStyled} rolled [${defenseDice.join(', ')}].`;
+      outcome += `<br>${compareLines.join('<br>')}`;
+      outcome += `<br><strong>Losses:</strong> attacker ${attackerLosses}, defender ${defenderLosses}.`;
+      logEntry(`<strong>Battle ${state.battleNumber}</strong><br>${outcome}`, defenderLosses > attackerLosses ? 'win' : 'lose');
+
+      if (state.defenders <= 0) {
+        state.territoryCaptured = true;
+        state.invasionEnded = true;
+
+        const survivingCommitted = Math.max(0, state.lastBattleAttackersCommitted - state.lastBattleAttackerLosses);
+        const maxExtraMovable = Math.max(0, state.attackers - 1 - survivingCommitted);
+        const requestedExtra = clamp(parseInt(els.moveAfterCapture.value || '0', 10), 0, 999);
+        const actualExtra = Math.min(requestedExtra, maxExtraMovable);
+        const movedTotal = survivingCommitted + actualExtra;
+        state.movedAfterCapture = movedTotal;
+        state.attackers -= movedTotal;
+
+        els.outcomeBox.innerHTML = `
+          <strong>Territory conquered.</strong><br>
+          Surviving battalions from the final battle that must move in: <strong>${survivingCommitted}</strong>.<br>
+          Extra battalions moved in: <strong>${actualExtra}</strong>.<br>
+          Total moved into captured territory: <strong>${movedTotal}</strong>.<br>
+          Battalions remaining in original territory: <strong>${state.attackers}</strong>.
+        `;
+
+        logEntry(`<strong>Capture</strong><br>The defender’s last battalion fell. ${survivingCommitted} surviving attackers from the last battle move in first, with ${actualExtra} extra battalions following.`, 'win');
+        updateView(result);
+      } else if (state.attackers < 2) {
+        state.invasionEnded = true;
+        els.outcomeBox.innerHTML = `<strong>Invasion halted.</strong><br>The attacker has only ${state.attackers} battalion left in the origin territory and cannot continue.`;
+      } else {
+        els.outcomeBox.innerHTML = `
+          <strong>Battle ${state.battleNumber} resolved.</strong><br>
+          ${els.attackerName.value || 'Attacker'} has <strong>${state.attackers}</strong> battalions in the origin territory.<br>
+          ${els.defenderName.value || 'Defender'} has <strong>${state.defenders}</strong> battalions remaining.
+        `;
+      }
+
+      els.attackers.value = state.attackers;
+      els.defenders.value = Math.max(0, state.defenders);
+      return result;
+    }
+
+    function resolveFullInvasion() {
+      if (!els.autoContinue.checked) {
+        battleOnce();
+        return;
+      }
+
+      if (state.territoryCaptured || state.invasionEnded) {
+        els.outcomeBox.textContent = 'The invasion is already over. Reset to begin a new one.';
+        return;
+      }
+
+      let safety = 0;
+      while (!state.territoryCaptured && !state.invasionEnded && safety < 5000) {
+        battleOnce();
+        safety += 1;
+      }
+    }
+
+    function resetScenario() {
+      syncStateFromInputs(true);
+    }
+
+    [
+      els.attackerName,
+      els.defenderName,
+      els.attackerForce,
+      els.defenderForce,
+      els.attackers,
+      els.defenders,
+      els.attackerDice,
+      els.defenderDiceMode,
+      els.attackerLeader,
+      els.defenderLeader,
+      els.defenderStronghold,
+      els.moveAfterCapture
+    ].forEach((el) => {
+      el.addEventListener('change', () => {
+        if (el === els.attackerName || el === els.defenderName || el === els.attackerForce || el === els.defenderForce) {
+          updateView();
+        } else {
+          syncStateFromInputs(true);
+        }
+      });
+    });
+
+    els.rollBtn.addEventListener('click', battleOnce);
+    els.resolveBtn.addEventListener('click', resolveFullInvasion);
+    els.resetBtn.addEventListener('click', resetScenario);
+
+    syncStateFromInputs(true);
+  </script>
+</body>
 </html>
