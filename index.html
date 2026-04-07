@@ -26,6 +26,10 @@
       --ink: #2a241d;
       --sidebar-blue: #5b739c;
       --sidebar-blue-dark: #496289;
+      --army-green: #5f7f56;
+      --army-gold: #c8a84e;
+      --army-red: #9b4a40;
+      --army-black: #2f2f31;
     }
 
     * { box-sizing: border-box; }
@@ -184,8 +188,56 @@
       font-size: 13px;
     }
 
-    .good { color: #4d6b8f; }
-    .evil { color: #7f3e33; }
+    .color-choices {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .color-choice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,248,233,0.72);
+      cursor: pointer;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .color-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .color-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.18);
+      flex: 0 0 auto;
+    }
+
+    .color-choice:has(input:checked) {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 2px rgba(95,121,166,0.18);
+      background: rgba(255,250,239,0.96);
+    }
+
+    .swatch-green { background: var(--army-green); }
+    .swatch-gold { background: var(--army-gold); }
+    .swatch-red { background: var(--army-red); }
+    .swatch-black { background: var(--army-black); }
+    .color-green { color: var(--army-green); }
+    .color-gold { color: var(--army-gold); }
+    .color-red { color: var(--army-red); }
+    .color-black { color: var(--army-black); }
+
+    .good { color: var(--army-green); }
+    .evil { color: var(--army-red); }
 
     .battlefield {
       display: grid;
@@ -206,6 +258,22 @@
     }
     .side.evil-side {
       box-shadow: inset 8px 0 0 rgba(127, 62, 51, 0.22);
+    }
+
+    .side.color-green {
+      box-shadow: inset 8px 0 0 rgba(95, 127, 86, 0.32);
+    }
+
+    .side.color-gold {
+      box-shadow: inset 8px 0 0 rgba(200, 168, 78, 0.34);
+    }
+
+    .side.color-red {
+      box-shadow: inset 8px 0 0 rgba(155, 74, 64, 0.28);
+    }
+
+    .side.color-black {
+      box-shadow: inset 8px 0 0 rgba(47, 47, 49, 0.26);
     }
 
     .versus {
@@ -425,15 +493,15 @@
     <section class="hero">
       <h1>Risk: the Lord of the Rings Trilogy Edition</h1>
       <p class="muted">
-        A themed simulator for the Trilogy Edition combat system. It applies the rulebook’s battle rules,
-        including attacker and defender dice limits, defender-wins-ties, leader bonuses, stronghold defense,
-        capture movement requirements, and full invasion resolution.
+        A streamlined simulator for the Trilogy Edition combat system. Choose each side’s army color,
+        set battalion counts, and resolve battles using the rulebook’s combat rules with defender-wins-ties,
+        leader bonuses, stronghold defense, capture movement requirements, and full invasion resolution.
       </p>
       <div class="row">
-        <div class="pill"><span>Attacker rolls</span><strong>1–3 red dice</strong></div>
-        <div class="pill"><span>Defender rolls</span><strong>1–2 black dice</strong></div>
+        <div class="pill"><span>Attacker rolls</span><strong>Always max available</strong></div>
+        <div class="pill"><span>Defender rolls</span><strong>Always max available</strong></div>
         <div class="pill"><span>Tie rule</span><strong>Defender wins</strong></div>
-        <div class="pill"><span>Leader / Stronghold</span><strong>+1 to highest die</strong></div>
+        <div class="pill"><span>Leader / Stronghold</span><strong>Highest die bonus</strong></div>
       </div>
     </section>
 
@@ -442,26 +510,22 @@
         <h2>Scenario Setup</h2>
         <div class="subgrid">
           <div class="field">
-            <label for="attackerName">Attacker Name</label>
-            <input id="attackerName" value="Free Peoples" />
+            <label>Attacker Color</label>
+            <div class="color-choices" id="attackerColorChoices">
+              <label class="color-choice"><input type="radio" name="attackerColor" value="green" checked /><span class="color-swatch swatch-green"></span><span>Green</span></label>
+              <label class="color-choice"><input type="radio" name="attackerColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
+              <label class="color-choice"><input type="radio" name="attackerColor" value="red" /><span class="color-swatch swatch-red"></span><span>Red</span></label>
+              <label class="color-choice"><input type="radio" name="attackerColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+            </div>
           </div>
           <div class="field">
-            <label for="defenderName">Defender Name</label>
-            <input id="defenderName" value="Shadow" />
-          </div>
-          <div class="field">
-            <label for="attackerForce">Attacker Alignment</label>
-            <select id="attackerForce">
-              <option value="good">Good</option>
-              <option value="evil">Evil</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="defenderForce">Defender Alignment</label>
-            <select id="defenderForce">
-              <option value="evil" selected>Evil</option>
-              <option value="good">Good</option>
-            </select>
+            <label>Defender Color</label>
+            <div class="color-choices" id="defenderColorChoices">
+              <label class="color-choice"><input type="radio" name="defenderColor" value="green" /><span class="color-swatch swatch-green"></span><span>Green</span></label>
+              <label class="color-choice"><input type="radio" name="defenderColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
+              <label class="color-choice"><input type="radio" name="defenderColor" value="red" checked /><span class="color-swatch swatch-red"></span><span>Red</span></label>
+              <label class="color-choice"><input type="radio" name="defenderColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+            </div>
           </div>
         </div>
 
@@ -472,25 +536,6 @@
         <div class="field">
           <label for="defenders">Battalions in Defending Territory</label>
           <input id="defenders" type="number" min="1" max="999" value="7" />
-        </div>
-
-        <div class="subgrid">
-          <div class="field">
-            <label for="attackerDice">Attack Dice This Battle</label>
-            <select id="attackerDice">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="defenderDiceMode">Defender Dice</label>
-            <select id="defenderDiceMode">
-              <option value="auto" selected>Auto (max legal)</option>
-              <option value="1">Always 1</option>
-              <option value="2">Always 2 if legal</option>
-            </select>
-          </div>
         </div>
 
         <div class="field">
@@ -519,8 +564,8 @@
           <h3>Rule Engine Notes</h3>
           <ul>
             <li>You must have at least 2 battalions in the attacking territory to attack.</li>
-            <li>You can send 1, 2, or 3 battalions into a battle, but never more than the territory can spare.</li>
-            <li>The defender can roll with 1 or 2 battalions, up to the number present.</li>
+            <li>The attacker always rolls the maximum legal number of dice for the battalions available.</li>
+            <li>The defender always rolls the maximum legal number of dice for the battalions present.</li>
             <li>Leader and stronghold bonuses stack on the defender’s highest die; a defender leader plus stronghold gives +2.</li>
             <li>After a successful invasion, surviving attacking battalions from the final battle must move in first.</li>
           </ul>
@@ -531,7 +576,7 @@
         <h2>Battlefield</h2>
         <div class="battlefield">
           <section class="side good-side" id="attackerPanel">
-            <h3 id="attackerDisplay">Free Peoples</h3>
+            <h3 id="attackerDisplay">Green Army</h3>
             <div class="statline">
               <div class="stat">
                 Battalions
@@ -549,7 +594,7 @@
           <div class="versus">VS</div>
 
           <section class="side evil-side" id="defenderPanel">
-            <h3 id="defenderDisplay">Shadow</h3>
+            <h3 id="defenderDisplay">Red Army</h3>
             <div class="statline">
               <div class="stat">
                 Battalions
@@ -616,14 +661,12 @@
     };
 
     const els = {
-      attackerName: document.getElementById('attackerName'),
-      defenderName: document.getElementById('defenderName'),
-      attackerForce: document.getElementById('attackerForce'),
-      defenderForce: document.getElementById('defenderForce'),
       attackers: document.getElementById('attackers'),
       defenders: document.getElementById('defenders'),
-      attackerDice: document.getElementById('attackerDice'),
-      defenderDiceMode: document.getElementById('defenderDiceMode'),
+      attackerColorChoices: document.getElementById('attackerColorChoices'),
+      defenderColorChoices: document.getElementById('defenderColorChoices'),
+      attackerColor: document.querySelector('input[name="attackerColor"]:checked'),
+      defenderColor: document.querySelector('input[name="defenderColor"]:checked'),
       moveAfterCapture: document.getElementById('moveAfterCapture'),
       attackerLeader: document.getElementById('attackerLeader'),
       defenderLeader: document.getElementById('defenderLeader'),
@@ -654,8 +697,23 @@
       return Math.floor(Math.random() * 6) + 1;
     }
 
-    function forceClass(force) {
-      return force === 'good' ? 'good' : 'evil';
+    function forceClass(color) {
+      return 'color-' + color;
+    }
+
+    function selectedArmyColor(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : 'green';
+    }
+
+    function armyLabel(color) {
+      const map = {
+        green: 'Green Army',
+        gold: 'Gold Army',
+        red: 'Red Army',
+        black: 'Black Army'
+      };
+      return map[color] || 'Army';
     }
 
     function syncStateFromInputs(resetBattleState = false) {
@@ -682,16 +740,11 @@
     }
 
     function legalAttackDice() {
-      return clamp(parseInt(els.attackerDice.value, 10), 1, Math.min(3, state.attackers - 1));
+      return Math.min(3, state.attackers - 1);
     }
 
     function legalDefenseDice() {
-      const defendersCanRoll = Math.min(2, state.defenders);
-      const mode = els.defenderDiceMode.value;
-      if (mode === 'auto') {
-        return defendersCanRoll;
-      }
-      return clamp(parseInt(mode, 10), 1, defendersCanRoll);
+      return Math.min(2, state.defenders);
     }
 
     function createDieEl(value, dark = false, bonus = 0) {
@@ -708,15 +761,17 @@
     }
 
     function updateView(lastRoll = null) {
-      els.attackerDisplay.textContent = els.attackerName.value || 'Attacker';
-      els.defenderDisplay.textContent = els.defenderName.value || 'Defender';
+      const attackerColor = selectedArmyColor('attackerColor');
+      const defenderColor = selectedArmyColor('defenderColor');
+      els.attackerDisplay.textContent = armyLabel(attackerColor);
+      els.defenderDisplay.textContent = armyLabel(defenderColor);
       els.attackerCount.textContent = state.attackers;
       els.defenderCount.textContent = state.defenders;
       els.attackerAvailable.textContent = Math.max(0, state.attackers - 1);
       els.defenderAvailable.textContent = Math.min(2, state.defenders);
 
-      els.attackerPanel.className = 'side ' + (els.attackerForce.value === 'good' ? 'good-side' : 'evil-side');
-      els.defenderPanel.className = 'side ' + (els.defenderForce.value === 'good' ? 'good-side' : 'evil-side');
+      els.attackerPanel.className = 'side color-' + attackerColor;
+      els.defenderPanel.className = 'side color-' + defenderColor;
 
       if (lastRoll) {
         els.attackDiceRow.innerHTML = '';
@@ -811,8 +866,10 @@
 
       updateView(result);
 
-      const attackerStyled = `<span class="${forceClass(els.attackerForce.value)}">${els.attackerName.value || 'Attacker'}</span>`;
-      const defenderStyled = `<span class="${forceClass(els.defenderForce.value)}">${els.defenderName.value || 'Defender'}</span>`;
+      const attackerColor = selectedArmyColor('attackerColor');
+      const attackerStyled = `<span class="color-${attackerColor}">${armyLabel(attackerColor)}</span>`;
+      const defenderColor = selectedArmyColor('defenderColor');
+      const defenderStyled = `<span class="color-${defenderColor}">${armyLabel(defenderColor)}</span>`;
 
       let outcome = `${attackerStyled} rolled [${attackDice.join(', ')}] and ${defenderStyled} rolled [${defenseDice.join(', ')}].`;
       outcome += `<br>${compareLines.join('<br>')}`;
@@ -847,8 +904,8 @@
       } else {
         els.outcomeBox.innerHTML = `
           <strong>Battle ${state.battleNumber} resolved.</strong><br>
-          ${els.attackerName.value || 'Attacker'} has <strong>${state.attackers}</strong> battalions in the origin territory.<br>
-          ${els.defenderName.value || 'Defender'} has <strong>${state.defenders}</strong> battalions remaining.
+          ${armyLabel(attackerColor)} has <strong>${state.attackers}</strong> battalions in the origin territory.<br>
+          ${armyLabel(defenderColor)} has <strong>${state.defenders}</strong> battalions remaining.
         `;
       }
 
@@ -880,25 +937,21 @@
     }
 
     [
-      els.attackerName,
-      els.defenderName,
-      els.attackerForce,
-      els.defenderForce,
       els.attackers,
       els.defenders,
-      els.attackerDice,
-      els.defenderDiceMode,
       els.attackerLeader,
       els.defenderLeader,
       els.defenderStronghold,
       els.moveAfterCapture
     ].forEach((el) => {
       el.addEventListener('change', () => {
-        if (el === els.attackerName || el === els.defenderName || el === els.attackerForce || el === els.defenderForce) {
-          updateView();
-        } else {
-          syncStateFromInputs(true);
-        }
+        syncStateFromInputs(true);
+      });
+    });
+
+    document.querySelectorAll('input[name="attackerColor"], input[name="defenderColor"]').forEach((el) => {
+      el.addEventListener('change', () => {
+        updateView();
       });
     });
 
