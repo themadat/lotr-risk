@@ -6,6 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Risk: the Lord of the Rings Trilogy Edition</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f3df8a'/%3E%3Cstop offset='0.45' stop-color='%23d6b54c'/%3E%3Cstop offset='1' stop-color='%238b6a1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='10' fill='%23f4ead1'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='url(%23g)' stroke-width='7'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23f4ead1'/%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="RISK: LotR " />
   <style>
     :root {
       --bg: #e6dfcc;
@@ -100,7 +102,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 320px minmax(0, 1fr) 280px;
+      grid-template-columns: 420px minmax(0, 1fr) 260px;
       gap: 14px;
       align-items: stretch;
       flex: 1 1 auto;
@@ -120,30 +122,44 @@
 
     .subgrid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+
+    .setup-side {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255, 248, 234, 0.5);
+    }
+
+    .setup-side h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: var(--ink);
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
     label {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--muted);
     }
 
     input, select, button, textarea {
       font: inherit;
-      font-size: 15px;
+      font-size: 16px;
       color: var(--text);
       background: rgba(255,250,239,0.92);
       border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 8px 10px;
+      border-radius: 12px;
+      padding: 10px 12px;
     }
 
     input[type="checkbox"] {
@@ -190,20 +206,21 @@
 
     .color-choices {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
     }
 
     .color-choice {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
+      gap: 10px;
+      min-height: 52px;
+      padding: 10px 12px;
       border: 1px solid var(--line);
-      border-radius: 999px;
+      border-radius: 16px;
       background: rgba(255,248,233,0.72);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 15px;
       user-select: none;
     }
 
@@ -235,6 +252,57 @@
     .color-gold { color: var(--army-gold); }
     .color-red { color: var(--army-red); }
     .color-black { color: var(--army-black); }
+
+    .icon-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .status-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,250,239,0.92);
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .status-icon .emoji {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .action-stack {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .action-btn {
+      min-height: 84px;
+      border-radius: 18px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      padding: 14px 16px;
+    }
+
+    .action-btn small {
+      display: block;
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0;
+      color: inherit;
+      opacity: 0.9;
+    }
 
     .good { color: var(--army-green); }
     .evil { color: var(--army-red); }
@@ -288,7 +356,7 @@
     .statline {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 10px;
       margin: 10px 0;
     }
 
@@ -297,7 +365,7 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 10px;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .stat strong {
@@ -312,7 +380,7 @@
       gap: 8px;
       flex-wrap: wrap;
       min-height: 48px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .die {
@@ -443,7 +511,7 @@
       }
 
       .grid {
-        grid-template-columns: 290px minmax(0, 1fr) 250px;
+        grid-template-columns: 360px minmax(0, 1fr) 230px;
         gap: 12px;
       }
 
@@ -467,7 +535,7 @@
         grid-template-columns: 1fr;
       }
 
-      .battlefield, .rules, .subgrid, .statline {
+      .battlefield, .rules, .subgrid, .statline, .action-stack {
         grid-template-columns: 1fr;
       }
 
@@ -491,12 +559,7 @@
 <body>
   <div class="app" role="application" aria-label="Risk: the Lord of the Rings Trilogy Edition battle simulator">
     <section class="hero">
-      <h1>Risk: the Lord of the Rings Trilogy Edition</h1>
-      <p class="muted">
-        A streamlined simulator for the Trilogy Edition combat system. Choose each side’s army color,
-        set battalion counts, and resolve battles using the rulebook’s combat rules with defender-wins-ties,
-        leader bonuses, stronghold defense, capture movement requirements, and full invasion resolution.
-      </p>
+      <h1>RISK: The Lord of the Rings Trilogy Edition</h1>
       <div class="row">
         <div class="pill"><span>Attacker rolls</span><strong>Always max available</strong></div>
         <div class="pill"><span>Defender rolls</span><strong>Always max available</strong></div>
@@ -509,33 +572,39 @@
       <aside class="panel">
         <h2>Scenario Setup</h2>
         <div class="subgrid">
-          <div class="field">
-            <label>Attacker Color</label>
-            <div class="color-choices" id="attackerColorChoices">
-              <label class="color-choice"><input type="radio" name="attackerColor" value="green" checked /><span class="color-swatch swatch-green"></span><span>Green</span></label>
-              <label class="color-choice"><input type="radio" name="attackerColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
-              <label class="color-choice"><input type="radio" name="attackerColor" value="red" /><span class="color-swatch swatch-red"></span><span>Red</span></label>
-              <label class="color-choice"><input type="radio" name="attackerColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+          <section class="setup-side">
+            <h3>Attacker</h3>
+            <div class="field">
+              <label>Army Color</label>
+              <div class="color-choices" id="attackerColorChoices">
+                <label class="color-choice"><input type="radio" name="attackerColor" value="green" checked /><span class="color-swatch swatch-green"></span><span>Green</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="red" /><span class="color-swatch swatch-red"></span><span>Red</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+              </div>
             </div>
-          </div>
-          <div class="field">
-            <label>Defender Color</label>
-            <div class="color-choices" id="defenderColorChoices">
-              <label class="color-choice"><input type="radio" name="defenderColor" value="green" /><span class="color-swatch swatch-green"></span><span>Green</span></label>
-              <label class="color-choice"><input type="radio" name="defenderColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
-              <label class="color-choice"><input type="radio" name="defenderColor" value="red" checked /><span class="color-swatch swatch-red"></span><span>Red</span></label>
-              <label class="color-choice"><input type="radio" name="defenderColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+            <div class="field">
+              <label for="attackers">Battalions in Attacking Territory</label>
+              <input id="attackers" type="number" min="2" max="999" value="12" />
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div class="field">
-          <label for="attackers">Battalions in Attacking Territory</label>
-          <input id="attackers" type="number" min="2" max="999" value="12" />
-        </div>
-        <div class="field">
-          <label for="defenders">Battalions in Defending Territory</label>
-          <input id="defenders" type="number" min="1" max="999" value="7" />
+          <section class="setup-side">
+            <h3>Defender</h3>
+            <div class="field">
+              <label>Army Color</label>
+              <div class="color-choices" id="defenderColorChoices">
+                <label class="color-choice"><input type="radio" name="defenderColor" value="green" /><span class="color-swatch swatch-green"></span><span>Green</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="red" checked /><span class="color-swatch swatch-red"></span><span>Red</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="defenders">Battalions in Defending Territory</label>
+              <input id="defenders" type="number" min="1" max="999" value="7" />
+            </div>
+          </section>
         </div>
 
         <div class="field">
@@ -554,11 +623,6 @@
           </div>
         </div>
 
-        <div class="row" style="margin-top: 14px;">
-          <button id="rollBtn">Roll One Battle</button>
-          <button id="resolveBtn">Resolve Full Invasion</button>
-          <button id="resetBtn" class="secondary">Reset</button>
-        </div>
 
         <div class="summary-box">
           <h3>Rule Engine Notes</h3>
@@ -575,8 +639,14 @@
       <main class="panel">
         <h2>Battlefield</h2>
         <div class="battlefield">
+          <div class="action-stack">
+            <button id="rollBtn" class="action-btn">Battle<small>Resolve one combat round</small></button>
+            <button id="resolveBtn" class="action-btn">Invasion<small>Continue until battle ends</small></button>
+          </div>
+          <div class="row" style="margin-bottom: 4px;"><button id="resetBtn" class="secondary">Reset</button></div>
           <section class="side good-side" id="attackerPanel">
             <h3 id="attackerDisplay">Green Army</h3>
+            <div class="icon-row" id="attackerIcons"></div>
             <div class="statline">
               <div class="stat">
                 Battalions
@@ -595,6 +665,7 @@
 
           <section class="side evil-side" id="defenderPanel">
             <h3 id="defenderDisplay">Red Army</h3>
+            <div class="icon-row" id="defenderIcons"></div>
             <div class="statline">
               <div class="stat">
                 Battalions
@@ -686,8 +757,26 @@
       outcomeBox: document.getElementById('outcomeBox'),
       log: document.getElementById('log'),
       attackerPanel: document.getElementById('attackerPanel'),
-      defenderPanel: document.getElementById('defenderPanel')
+      defenderPanel: document.getElementById('defenderPanel'),
+      attackerIcons: document.getElementById('attackerIcons'),
+      defenderIcons: document.getElementById('defenderIcons'),
     };
+    function renderStatusIcons() {
+      els.attackerIcons.innerHTML = '';
+      els.defenderIcons.innerHTML = '';
+
+      if (els.attackerLeader.checked) {
+        els.attackerIcons.innerHTML += '<div class="status-icon"><span class="emoji">👑</span><span>Leader</span></div>';
+      }
+
+      if (els.defenderLeader.checked) {
+        els.defenderIcons.innerHTML += '<div class="status-icon"><span class="emoji">👑</span><span>Leader</span></div>';
+      }
+
+      if (els.defenderStronghold.checked) {
+        els.defenderIcons.innerHTML += '<div class="status-icon"><span class="emoji">🏰</span><span>Stronghold</span></div>';
+      }
+    }
 
     function clamp(value, min, max) {
       return Math.max(min, Math.min(max, value));
@@ -772,6 +861,7 @@
 
       els.attackerPanel.className = 'side color-' + attackerColor;
       els.defenderPanel.className = 'side color-' + defenderColor;
+      renderStatusIcons();
 
       if (lastRoll) {
         els.attackDiceRow.innerHTML = '';
