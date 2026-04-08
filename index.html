@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Risk: the Lord of the Rings Trilogy Edition</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f3df8a'/%3E%3Cstop offset='0.45' stop-color='%23d6b54c'/%3E%3Cstop offset='1' stop-color='%238b6a1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='10' fill='%23f4ead1'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='url(%23g)' stroke-width='7'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23f4ead1'/%3E%3C/svg%3E" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="RISK: LotR " />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23f3df8a'/%3E%3Cstop offset='0.45' stop-color='%23d6b54c'/%3E%3Cstop offset='1' stop-color='%238b6a1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='10' fill='%23f4ead1'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='url(%23g)' stroke-width='7'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23f4ead1'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="LOTR Risk" />
   <style>
     :root {
       --bg: #e6dfcc;
@@ -34,15 +36,18 @@
       --army-black: #2f2f31;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top, rgba(214,195,90,0.18), transparent 30%),
+        radial-gradient(circle at top, rgba(214, 195, 90, 0.18), transparent 30%),
         radial-gradient(circle at 20% 10%, var(--paper-stain), transparent 28%),
-        radial-gradient(circle at 80% 20%, rgba(95,121,166,0.08), transparent 24%),
+        radial-gradient(circle at 80% 20%, rgba(95, 121, 166, 0.08), transparent 24%),
         linear-gradient(180deg, #f1eadb, var(--bg));
       min-height: 100vh;
       overflow: hidden;
@@ -50,7 +55,8 @@
     }
 
     .app {
-      max-width: 1400px;
+      width: min(100vw, 1800px);
+      max-width: none;
       margin: 0 auto;
       padding: 18px;
       height: 100dvh;
@@ -63,8 +69,8 @@
     .hero {
       border: 1px solid var(--line);
       background:
-        linear-gradient(90deg, var(--sidebar-blue) 0, var(--sidebar-blue) 120px, rgba(236,228,210,0.98) 120px, rgba(236,228,210,0.98) 100%),
-        linear-gradient(180deg, rgba(255,250,235,0.65), rgba(226,216,195,0.9));
+        linear-gradient(90deg, var(--sidebar-blue) 0, var(--sidebar-blue) 120px, rgba(236, 228, 210, 0.98) 120px, rgba(236, 228, 210, 0.98) 100%),
+        linear-gradient(180deg, rgba(255, 250, 235, 0.65), rgba(226, 216, 195, 0.9));
       border-radius: 20px;
       padding: 18px 20px;
       box-shadow: var(--shadow);
@@ -79,13 +85,15 @@
       position: absolute;
       right: 18px;
       bottom: 12px;
-      color: rgba(95,121,166,0.18);
+      color: rgba(95, 121, 166, 0.18);
       font-size: 24px;
       letter-spacing: 1px;
       pointer-events: none;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       margin: 0 0 12px 0;
       font-weight: 700;
       letter-spacing: 0.5px;
@@ -94,15 +102,23 @@
     h1 {
       font-size: clamp(28px, 4vw, 44px);
       color: var(--ink);
-      text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
     }
 
-    p { line-height: 1.5; }
-    .muted { color: var(--muted); }
+    p {
+      line-height: 1.5;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
 
     .grid {
       display: grid;
-      grid-template-columns: 420px minmax(0, 1fr) 260px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.7fr);
+      grid-template-areas:
+        "setup log"
+        "battle log";
       gap: 14px;
       align-items: stretch;
       flex: 1 1 auto;
@@ -111,13 +127,18 @@
 
     .panel {
       background:
-        linear-gradient(180deg, rgba(245,239,225,0.97), rgba(231,222,202,0.97));
+        linear-gradient(180deg, rgba(245, 239, 225, 0.97), rgba(231, 222, 202, 0.97));
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 14px;
       box-shadow: var(--shadow);
       min-height: 0;
       overflow: hidden;
+    }
+
+    main.panel {
+      display: flex;
+      flex-direction: column;
     }
 
     .subgrid {
@@ -152,14 +173,32 @@
       color: var(--muted);
     }
 
-    input, select, button, textarea {
+    input,
+    select,
+    button,
+    textarea {
       font: inherit;
       font-size: 16px;
       color: var(--text);
-      background: rgba(255,250,239,0.92);
+      background: rgba(255, 250, 239, 0.92);
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 10px 12px;
+    }
+
+    input[type="number"] {
+      min-height: 56px;
+      padding: 12px 14px;
+      font-size: 18px;
+      touch-action: manipulation;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      opacity: 1;
+      width: 28px;
+      height: 44px;
+      margin: 0;
     }
 
     input[type="checkbox"] {
@@ -178,7 +217,10 @@
       box-shadow: 0 3px 10px rgba(73, 98, 137, 0.18);
     }
 
-    button:hover { transform: translateY(-1px); }
+    button:hover {
+      transform: translateY(-1px);
+    }
+
     button.secondary {
       background: linear-gradient(180deg, #d8ccb3, #c5b796);
       border-color: var(--line);
@@ -192,35 +234,93 @@
       align-items: center;
     }
 
+    .stat-input-row {
+      align-items: stretch;
+      flex-wrap: nowrap;
+      gap: 10px;
+    }
+
+    .stat-input-row input[type="number"] {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .stepper {
+      display: flex;
+      gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .step-btn {
+      min-height: 56px;
+      min-width: 56px;
+      padding: 0;
+      border-radius: 14px;
+      font-size: 26px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 250, 239, 0.96);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .step-btn:hover {
+      transform: none;
+    }
+
+    .step-btn:active {
+      transform: translateY(1px);
+    }
+
+    .step-btn {
+      min-height: 60px;
+      min-width: 60px;
+      font-size: 28px;
+    }
+
+    .icon-pill {
+      min-height: 44px;
+      min-width: 44px;
+      justify-content: center;
+      padding: 0 12px;
+      margin: 0;
+      font-size: 20px;
+      flex: 0 0 auto;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 6px 10px;
-      background: rgba(255,248,233,0.72);
+      padding: 4px 9px;
+      background: rgba(255, 248, 233, 0.72);
       margin: 0 6px 6px 0;
       font-size: 13px;
     }
 
     .color-choices {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
     }
 
     .color-choice {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-height: 52px;
-      padding: 10px 12px;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 6px 10px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255,248,233,0.72);
+      border-radius: 14px;
+      background: rgba(255, 248, 233, 0.72);
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
       user-select: none;
     }
 
@@ -234,24 +334,47 @@
       width: 14px;
       height: 14px;
       border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.18);
+      border: 1px solid rgba(0, 0, 0, 0.18);
       flex: 0 0 auto;
     }
 
     .color-choice:has(input:checked) {
       border-color: var(--accent);
-      box-shadow: inset 0 0 0 2px rgba(95,121,166,0.18);
-      background: rgba(255,250,239,0.96);
+      box-shadow: inset 0 0 0 2px rgba(95, 121, 166, 0.18);
+      background: rgba(255, 250, 239, 0.96);
     }
 
-    .swatch-green { background: var(--army-green); }
-    .swatch-gold { background: var(--army-gold); }
-    .swatch-red { background: var(--army-red); }
-    .swatch-black { background: var(--army-black); }
-    .color-green { color: var(--army-green); }
-    .color-gold { color: var(--army-gold); }
-    .color-red { color: var(--army-red); }
-    .color-black { color: var(--army-black); }
+    .swatch-green {
+      background: var(--army-green);
+    }
+
+    .swatch-gold {
+      background: var(--army-gold);
+    }
+
+    .swatch-red {
+      background: var(--army-red);
+    }
+
+    .swatch-black {
+      background: var(--army-black);
+    }
+
+    .color-green {
+      color: var(--army-green);
+    }
+
+    .color-gold {
+      color: var(--army-gold);
+    }
+
+    .color-red {
+      color: var(--army-red);
+    }
+
+    .color-black {
+      color: var(--army-black);
+    }
 
     .icon-row {
       display: flex;
@@ -268,7 +391,7 @@
       padding: 6px 10px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: rgba(255,250,239,0.92);
+      background: rgba(255, 250, 239, 0.92);
       font-size: 13px;
       color: var(--ink);
     }
@@ -280,8 +403,16 @@
 
     .action-stack {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
       gap: 12px;
+      width: min(100%, 520px);
+    }
+
+    .battle-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-top: 14px;
     }
 
@@ -304,13 +435,18 @@
       opacity: 0.9;
     }
 
-    .good { color: var(--army-green); }
-    .evil { color: var(--army-red); }
+    .good {
+      color: var(--army-green);
+    }
+
+    .evil {
+      color: var(--army-red);
+    }
 
     .battlefield {
       display: grid;
-      grid-template-columns: 1fr 88px 1fr;
-      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) 88px minmax(0, 1fr);
+      gap: 18px;
       align-items: stretch;
     }
 
@@ -324,6 +460,7 @@
     .side.good-side {
       box-shadow: inset 8px 0 0 rgba(91, 115, 156, 0.28);
     }
+
     .side.evil-side {
       box-shadow: inset 8px 0 0 rgba(127, 62, 51, 0.22);
     }
@@ -350,29 +487,57 @@
       justify-content: center;
       font-size: 28px;
       color: var(--accent);
-      text-shadow: 0 0 18px rgba(95,121,166,0.12);
+      text-shadow: 0 0 18px rgba(95, 121, 166, 0.12);
     }
 
-    .statline {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 10px 0;
+    .battle-stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 6px;
     }
 
-    .stat {
-      background: rgba(226, 216, 195, 0.88);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px;
+    .battle-stat-text {
+      min-width: 0;
       font-size: 14px;
+      color: var(--muted);
     }
 
-    .stat strong {
+    .battle-stat-text strong {
       display: block;
-      font-size: 22px;
+      font-size: 24px;
       color: var(--accent);
       margin-top: 2px;
+    }
+
+    .stat-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .status-icon.is-inactive {
+      opacity: 0.28;
+    }
+
+    .status-icon.has-bonus {
+      position: relative;
+    }
+
+    .status-icon .icon-bonus {
+      position: absolute;
+      right: -6px;
+      top: -8px;
+      background: var(--accent-2);
+      color: #3a3120;
+      border-radius: 999px;
+      padding: 2px 6px;
+      font-size: 10px;
+      border: 1px solid #efe2a2;
+      line-height: 1;
+      font-weight: 700;
     }
 
     .dice-row {
@@ -392,17 +557,33 @@
       justify-content: center;
       font-size: 18px;
       font-weight: 700;
-      background: #f5efdd;
-      color: #1f1b16;
-      border: 2px solid #d3c29a;
+      background: #9b4a40;
+      color: #f8f8f6;
+      border: 2px solid #7d392f;
       position: relative;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     }
 
     .die.bad {
-      background: #5c7399;
-      color: #f8f2e2;
-      border-color: #445a7d;
+      background: #2f2f31;
+      color: #f8f8f6;
+      border-color: #1d1d1f;
     }
+
+    .die.winner {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(214, 195, 90, 0.42), 0 8px 18px rgba(58, 49, 32, 0.22);
+      border-color: #efe2a2;
+    }
+
+    .die.loser {
+      opacity: 0.58;
+    }
+    .die.third-attack {
+      opacity: 0.7;
+      transform: scale(0.94);
+    }
+
     .die .bonus {
       position: absolute;
       right: -6px;
@@ -413,6 +594,71 @@
       padding: 2px 6px;
       font-size: 10px;
       border: 1px solid #efe2a2;
+    }
+
+    .log-odds-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, rgba(255, 250, 239, 0.96), rgba(226, 216, 195, 0.9));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .log-odds-title {
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .log-odds-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .log-odds-main {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .log-odds-main .label {
+      color: var(--muted);
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    .log-odds-sub {
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--text);
+    }
+
+    .inline-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .inline-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    .log-odds-box.is-hidden .log-odds-main,
+    .log-odds-box.is-hidden .log-odds-sub {
+      display: none;
     }
 
     .log {
@@ -426,14 +672,19 @@
       border-left: 3px solid var(--line);
       padding: 8px 10px;
       margin-bottom: 8px;
-      background: rgba(255,248,234,0.62);
+      background: rgba(255, 248, 234, 0.62);
       border-radius: 0 10px 10px 0;
       font-size: 13px;
       line-height: 1.35;
     }
 
-    .entry.win { border-left-color: var(--win); }
-    .entry.lose { border-left-color: var(--lose); }
+    .entry.win {
+      border-left-color: var(--win);
+    }
+
+    .entry.lose {
+      border-left-color: var(--lose);
+    }
 
     .summary-box {
       border: 1px dashed #8c8168;
@@ -445,11 +696,59 @@
       line-height: 1.35;
     }
 
+    .battle-result-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 72px;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 250, 239, 0.96), rgba(226, 216, 195, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.2px;
+}
+
+    .battle-result-banner.loss-attacker {
+      color: var(--army-red);
+    }
+
+    .battle-result-banner.loss-defender {
+      color: var(--army-green);
+    }
+
+    .battle-result-banner.color-green {
+      color: var(--army-green);
+    }
+
+    .battle-result-banner.color-gold {
+      color: var(--army-gold);
+    }
+
+    .battle-result-banner.color-red {
+      color: var(--army-red);
+    }
+
+    .battle-result-banner.color-black {
+      color: var(--army-black);
+    }
+
+.battle-result-detail {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
     .rules {
       margin-top: 12px;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
       font-size: 13px;
       line-height: 1.35;
     }
@@ -465,6 +764,7 @@
       color: var(--muted);
       line-height: 1.3;
     }
+
     .hero h1,
     .hero p,
     .hero .row {
@@ -473,18 +773,23 @@
       padding-left: 120px;
     }
 
+    .hero .row {
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+
     .hero::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 70% 18%, rgba(255,255,255,0.18), transparent 24%),
-        linear-gradient(180deg, rgba(255,255,255,0.14), transparent 55%);
+        radial-gradient(circle at 70% 18%, rgba(255, 255, 255, 0.18), transparent 24%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 55%);
       pointer-events: none;
     }
 
-    .panel > h2,
-    .panel > h3,
+    .panel>h2,
+    .panel>h3,
     .rules h3 {
       margin-bottom: 8px;
     }
@@ -492,6 +797,22 @@
     aside.panel {
       display: flex;
       flex-direction: column;
+    }
+
+    .setup-panel {
+      grid-area: setup;
+    }
+
+    .battle-panel {
+      grid-area: battle;
+    }
+
+    .log-panel {
+      grid-area: log;
+    }
+
+    .log-panel {
+      height: 100%;
     }
 
     @media (max-width: 1200px) {
@@ -511,7 +832,10 @@
       }
 
       .grid {
-        grid-template-columns: 360px minmax(0, 1fr) 230px;
+        grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.65fr);
+        grid-template-areas:
+          "setup log"
+          "battle log";
         gap: 12px;
       }
 
@@ -533,10 +857,26 @@
 
       .grid {
         grid-template-columns: 1fr;
+        grid-template-areas:
+          "setup"
+          "battle"
+          "log";
       }
 
-      .battlefield, .rules, .subgrid, .statline, .action-stack {
+      .battlefield,
+      .rules,
+      .subgrid,
+      .action-stack {
         grid-template-columns: 1fr;
+      }
+
+      .battle-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .action-stack {
+        width: 100%;
       }
 
       .versus {
@@ -551,111 +891,130 @@
 
       .hero {
         background:
-          linear-gradient(180deg, rgba(255,250,235,0.65), rgba(226,216,195,0.9));
+          linear-gradient(180deg, rgba(255, 250, 235, 0.65), rgba(226, 216, 195, 0.9));
+      }
+
+      .stat-input-row {
+        gap: 8px;
+      }
+
+      .icon-pill {
+        min-height: 48px;
+        min-width: 48px;
+        padding: 0 12px;
+      }
+
+      .color-choices {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .color-choice {
+        min-height: 38px;
+        padding: 6px 8px;
+        gap: 6px;
+        font-size: 13px;
+      }
+
+      input[type="number"] {
+        min-height: 60px;
+        font-size: 20px;
+      }
+
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        width: 32px;
+        height: 48px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="app" role="application" aria-label="Risk: the Lord of the Rings Trilogy Edition battle simulator">
     <section class="hero">
       <h1>RISK: The Lord of the Rings Trilogy Edition</h1>
-      <div class="row">
-        <div class="pill"><span>Attacker rolls</span><strong>Always max available</strong></div>
-        <div class="pill"><span>Defender rolls</span><strong>Always max available</strong></div>
-        <div class="pill"><span>Tie rule</span><strong>Defender wins</strong></div>
-        <div class="pill"><span>Leader / Stronghold</span><strong>Highest die bonus</strong></div>
-      </div>
     </section>
 
     <section class="grid">
-      <aside class="panel">
+      <aside class="panel setup-panel">
         <h2>Scenario Setup</h2>
         <div class="subgrid">
           <section class="setup-side">
             <h3>Attacker</h3>
             <div class="field">
-              <label>Army Color</label>
               <div class="color-choices" id="attackerColorChoices">
-                <label class="color-choice"><input type="radio" name="attackerColor" value="green" checked /><span class="color-swatch swatch-green"></span><span>Green</span></label>
-                <label class="color-choice"><input type="radio" name="attackerColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
-                <label class="color-choice"><input type="radio" name="attackerColor" value="red" /><span class="color-swatch swatch-red"></span><span>Red</span></label>
-                <label class="color-choice"><input type="radio" name="attackerColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="green" checked /><span
+                    class="color-swatch swatch-green"></span><span>Green</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="gold" /><span
+                    class="color-swatch swatch-gold"></span><span>Gold</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="red" /><span
+                    class="color-swatch swatch-red"></span><span>Red</span></label>
+                <label class="color-choice"><input type="radio" name="attackerColor" value="black" /><span
+                    class="color-swatch swatch-black"></span><span>Black</span></label>
               </div>
             </div>
             <div class="field">
-              <label for="attackers">Battalions in Attacking Territory</label>
-              <input id="attackers" type="number" min="2" max="999" value="12" />
+              <label for="attackers">Battalions</label>
+              <div class="row stat-input-row">
+                <input id="attackers" type="number" min="2" max="999" value="12" />
+                <div class="stepper" aria-label="Adjust attacker battalions">
+                  <button type="button" class="step-btn" id="attackersDown"
+                    aria-label="Decrease attacker battalions">−</button>
+                  <button type="button" class="step-btn" id="attackersUp"
+                    aria-label="Increase attacker battalions">+</button>
+                </div>
+                <label class="pill icon-pill"><input id="attackerLeader" type="checkbox" /> 👑</label>
+              </div>
             </div>
           </section>
 
           <section class="setup-side">
             <h3>Defender</h3>
             <div class="field">
-              <label>Army Color</label>
               <div class="color-choices" id="defenderColorChoices">
-                <label class="color-choice"><input type="radio" name="defenderColor" value="green" /><span class="color-swatch swatch-green"></span><span>Green</span></label>
-                <label class="color-choice"><input type="radio" name="defenderColor" value="gold" /><span class="color-swatch swatch-gold"></span><span>Gold</span></label>
-                <label class="color-choice"><input type="radio" name="defenderColor" value="red" checked /><span class="color-swatch swatch-red"></span><span>Red</span></label>
-                <label class="color-choice"><input type="radio" name="defenderColor" value="black" /><span class="color-swatch swatch-black"></span><span>Black</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="green" /><span
+                    class="color-swatch swatch-green"></span><span>Green</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="gold" /><span
+                    class="color-swatch swatch-gold"></span><span>Gold</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="red" checked /><span
+                    class="color-swatch swatch-red"></span><span>Red</span></label>
+                <label class="color-choice"><input type="radio" name="defenderColor" value="black" /><span
+                    class="color-swatch swatch-black"></span><span>Black</span></label>
               </div>
             </div>
             <div class="field">
-              <label for="defenders">Battalions in Defending Territory</label>
-              <input id="defenders" type="number" min="1" max="999" value="7" />
+              <label for="defenders">Battalions</label>
+              <div class="row stat-input-row">
+                <input id="defenders" type="number" min="1" max="999" value="7" />
+                <div class="stepper" aria-label="Adjust defender battalions">
+                  <button type="button" class="step-btn" id="defendersDown"
+                    aria-label="Decrease defender battalions">−</button>
+                  <button type="button" class="step-btn" id="defendersUp"
+                    aria-label="Increase defender battalions">+</button>
+                </div>
+                <label class="pill icon-pill"><input id="defenderLeader" type="checkbox" /> 👑</label>
+                <label class="pill icon-pill"><input id="defenderStronghold" type="checkbox" /> 🏰</label>
+              </div>
             </div>
           </section>
         </div>
 
-        <div class="field">
-          <label for="moveAfterCapture">Extra battalions to move after capture</label>
-          <input id="moveAfterCapture" type="number" min="0" max="999" value="0" />
-        </div>
 
-        <div class="summary-box">
-          <div class="row" style="justify-content:space-between;">
-            <label class="pill"><input id="attackerLeader" type="checkbox" /> Attacker Leader in battle</label>
-            <label class="pill"><input id="defenderLeader" type="checkbox" /> Defender Leader present</label>
-          </div>
-          <div class="row" style="justify-content:space-between; margin-top:8px;">
-            <label class="pill"><input id="defenderStronghold" type="checkbox" /> Defender Stronghold</label>
-            <label class="pill"><input id="autoContinue" type="checkbox" checked /> Continue invasion until end</label>
-          </div>
-        </div>
-
-
-        <div class="summary-box">
-          <h3>Rule Engine Notes</h3>
-          <ul>
-            <li>You must have at least 2 battalions in the attacking territory to attack.</li>
-            <li>The attacker always rolls the maximum legal number of dice for the battalions available.</li>
-            <li>The defender always rolls the maximum legal number of dice for the battalions present.</li>
-            <li>Leader and stronghold bonuses stack on the defender’s highest die; a defender leader plus stronghold gives +2.</li>
-            <li>After a successful invasion, surviving attacking battalions from the final battle must move in first.</li>
-          </ul>
-        </div>
       </aside>
 
-      <main class="panel">
+      <main class="panel battle-panel">
         <h2>Battlefield</h2>
         <div class="battlefield">
-          <div class="action-stack">
-            <button id="rollBtn" class="action-btn">Battle<small>Resolve one combat round</small></button>
-            <button id="resolveBtn" class="action-btn">Invasion<small>Continue until battle ends</small></button>
-          </div>
-          <div class="row" style="margin-bottom: 4px;"><button id="resetBtn" class="secondary">Reset</button></div>
           <section class="side good-side" id="attackerPanel">
             <h3 id="attackerDisplay">Green Army</h3>
             <div class="icon-row" id="attackerIcons"></div>
-            <div class="statline">
-              <div class="stat">
-                Battalions
+            <div class="battle-stats">
+              <div class="battle-stat-text">
+                Battalions in invasion
                 <strong id="attackerCount">12</strong>
               </div>
-              <div class="stat">
-                Available to attack
-                <strong id="attackerAvailable">11</strong>
-              </div>
+              <div class="stat-icons" id="attackerStatIcons"></div>
             </div>
             <div class="muted">Current attack dice</div>
             <div class="dice-row" id="attackDiceRow"></div>
@@ -666,54 +1025,42 @@
           <section class="side evil-side" id="defenderPanel">
             <h3 id="defenderDisplay">Red Army</h3>
             <div class="icon-row" id="defenderIcons"></div>
-            <div class="statline">
-              <div class="stat">
-                Battalions
+            <div class="battle-stats">
+              <div class="battle-stat-text">
+                Battalions in invasion
                 <strong id="defenderCount">7</strong>
               </div>
-              <div class="stat">
-                Defense dice
-                <strong id="defenderAvailable">2</strong>
-              </div>
+              <div class="stat-icons" id="defenderStatIcons"></div>
             </div>
             <div class="muted">Current defense dice</div>
             <div class="dice-row" id="defenseDiceRow"></div>
           </section>
         </div>
 
-        <div class="summary-box" id="outcomeBox">
-          Awaiting the first battle.
+        <div class="battle-controls">
+          <div class="action-stack">
+            <button id="rollBtn" class="action-btn">Battle<small>Resolve one combat round</small></button>
+            <button id="resolveBtn" class="action-btn">Invasion<small>Continue until battle ends</small></button>
+          </div>
         </div>
 
-        <div class="rules">
-          <div>
-            <h3>Combat Rules Modeled</h3>
-            <ul>
-              <li>Attacker compares highest die to defender highest die, then next-highest against next-highest.</li>
-              <li>Only as many comparisons as the smaller dice pool.</li>
-              <li>In ties, the defender wins.</li>
-              <li>Bonuses modify only the side’s single highest die for that battle.</li>
-              <li>Attack ends if the attacker stops, cannot continue, or loses all battalions except one in the origin territory.</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Capture Resolution</h3>
-            <ul>
-              <li>When defenders are eliminated, the territory is conquered immediately.</li>
-              <li>All surviving attackers from the last battle move in automatically.</li>
-              <li>Optional extra battalions may also move in, but at least one battalion must remain behind in the origin territory.</li>
-              <li>This app focuses on battle resolution, not region scoring, card draws, fellowship movement, or mission/adventure card play.</li>
-            </ul>
-          </div>
-        </div>
+        <div class="summary-box" id="outcomeBox">
+  <div class="battle-result-banner" id="battleResultBanner">Awaiting the first battle.</div>
+  <div class="battle-result-detail" id="battleResultDetail"></div>
+</div>
       </main>
 
-      <aside class="panel">
+      <aside class="panel log-panel">
         <h2>Battle Log</h2>
-        <div id="log" class="log"></div>
-        <div class="footer-note">
-          Recommended use: test exact battles, compare leader/stronghold outcomes, or run repeated invasions by changing the setup and pressing <em>Resolve Full Invasion</em>.
+        <div class="log-odds-box" id="logOddsBox">
+          <div class="log-odds-header">
+            <div class="log-odds-title">Live Odds</div>
+            <label class="inline-toggle"><input type="checkbox" id="hideOdds" /> Hide</label>
+          </div>
+          <div class="log-odds-main" id="logOddsMain">Calculating…</div>
+          <div class="log-odds-sub" id="logOddsSub"></div>
         </div>
+        <div id="log" class="log"></div>
       </aside>
     </section>
   </div>
@@ -733,49 +1080,58 @@
 
     const els = {
       attackers: document.getElementById('attackers'),
+      attackersDown: document.getElementById('attackersDown'),
+      attackersUp: document.getElementById('attackersUp'),
       defenders: document.getElementById('defenders'),
+      defendersDown: document.getElementById('defendersDown'),
+      defendersUp: document.getElementById('defendersUp'),
       attackerColorChoices: document.getElementById('attackerColorChoices'),
       defenderColorChoices: document.getElementById('defenderColorChoices'),
       attackerColor: document.querySelector('input[name="attackerColor"]:checked'),
       defenderColor: document.querySelector('input[name="defenderColor"]:checked'),
-      moveAfterCapture: document.getElementById('moveAfterCapture'),
       attackerLeader: document.getElementById('attackerLeader'),
       defenderLeader: document.getElementById('defenderLeader'),
       defenderStronghold: document.getElementById('defenderStronghold'),
-      autoContinue: document.getElementById('autoContinue'),
       rollBtn: document.getElementById('rollBtn'),
       resolveBtn: document.getElementById('resolveBtn'),
-      resetBtn: document.getElementById('resetBtn'),
       attackerDisplay: document.getElementById('attackerDisplay'),
       defenderDisplay: document.getElementById('defenderDisplay'),
       attackerCount: document.getElementById('attackerCount'),
       defenderCount: document.getElementById('defenderCount'),
-      attackerAvailable: document.getElementById('attackerAvailable'),
-      defenderAvailable: document.getElementById('defenderAvailable'),
       attackDiceRow: document.getElementById('attackDiceRow'),
       defenseDiceRow: document.getElementById('defenseDiceRow'),
       outcomeBox: document.getElementById('outcomeBox'),
+      battleResultBanner: document.getElementById('battleResultBanner'),
+      battleResultDetail: document.getElementById('battleResultDetail'),
+      logOddsBox: document.getElementById('logOddsBox'),
+      logOddsMain: document.getElementById('logOddsMain'),
+      logOddsSub: document.getElementById('logOddsSub'),
       log: document.getElementById('log'),
       attackerPanel: document.getElementById('attackerPanel'),
       defenderPanel: document.getElementById('defenderPanel'),
       attackerIcons: document.getElementById('attackerIcons'),
+      attackerStatIcons: document.getElementById('attackerStatIcons'),
       defenderIcons: document.getElementById('defenderIcons'),
+      defenderStatIcons: document.getElementById('defenderStatIcons'),
+      hideOdds: document.getElementById('hideOdds'),
     };
     function renderStatusIcons() {
       els.attackerIcons.innerHTML = '';
       els.defenderIcons.innerHTML = '';
+      els.attackerStatIcons.innerHTML = '';
+      els.defenderStatIcons.innerHTML = '';
 
-      if (els.attackerLeader.checked) {
-        els.attackerIcons.innerHTML += '<div class="status-icon"><span class="emoji">👑</span><span>Leader</span></div>';
-      }
+      const attackerLeaderActive = els.attackerLeader.checked ? ' has-bonus' : ' is-inactive';
+      const defenderLeaderActive = els.defenderLeader.checked ? ' has-bonus' : ' is-inactive';
+      const defenderStrongholdActive = els.defenderStronghold.checked ? ' has-bonus' : ' is-inactive';
 
-      if (els.defenderLeader.checked) {
-        els.defenderIcons.innerHTML += '<div class="status-icon"><span class="emoji">👑</span><span>Leader</span></div>';
-      }
+      const attackerLeaderBonus = els.attackerLeader.checked ? '<span class="icon-bonus">+1</span>' : '';
+      const defenderLeaderBonus = els.defenderLeader.checked ? '<span class="icon-bonus">+1</span>' : '';
+      const defenderStrongholdBonus = els.defenderStronghold.checked ? '<span class="icon-bonus">+1</span>' : '';
 
-      if (els.defenderStronghold.checked) {
-        els.defenderIcons.innerHTML += '<div class="status-icon"><span class="emoji">🏰</span><span>Stronghold</span></div>';
-      }
+      els.attackerStatIcons.innerHTML += '<div class="status-icon' + attackerLeaderActive + '"><span class="emoji">👑</span>' + attackerLeaderBonus + '</div>';
+      els.defenderStatIcons.innerHTML += '<div class="status-icon' + defenderLeaderActive + '"><span class="emoji">👑</span>' + defenderLeaderBonus + '</div>';
+      els.defenderStatIcons.innerHTML += '<div class="status-icon' + defenderStrongholdActive + '"><span class="emoji">🏰</span>' + defenderStrongholdBonus + '</div>';
     }
 
     function clamp(value, min, max) {
@@ -784,6 +1140,121 @@
 
     function randDie() {
       return Math.floor(Math.random() * 6) + 1;
+    }
+
+    function rollSortedDice(count, bonus = 0) {
+      const dice = Array.from({ length: count }, randDie).sort((a, b) => b - a);
+      if (dice.length > 0) {
+        dice[0] += bonus;
+      }
+      return dice;
+    }
+
+    function simulateBattleRound(simAttackers, simDefenders, attackerBonus, defenderBonus) {
+      const attackDice = rollSortedDice(Math.min(3, Math.max(0, simAttackers - 1)), attackerBonus);
+      const defenseDice = rollSortedDice(Math.min(2, simDefenders), defenderBonus);
+      const comparisons = Math.min(attackDice.length, defenseDice.length);
+
+      let attackerLosses = 0;
+      let defenderLosses = 0;
+
+      for (let i = 0; i < comparisons; i += 1) {
+        if (attackDice[i] > defenseDice[i]) {
+          defenderLosses += 1;
+        } else {
+          attackerLosses += 1;
+        }
+      }
+
+      return {
+        attackers: simAttackers - attackerLosses,
+        defenders: simDefenders - defenderLosses
+      };
+    }
+
+    function estimateInvasionOdds(iterations = 1200) {
+      if (state.defenders <= 0) {
+        return {
+          captureChance: 1,
+          holdChance: 0,
+          avgAttackersLeft: state.attackers,
+          avgDefendersLeft: 0
+        };
+      }
+
+      if (state.attackers < 2 || state.invasionEnded) {
+        return {
+          captureChance: 0,
+          holdChance: 1,
+          avgAttackersLeft: state.attackers,
+          avgDefendersLeft: state.defenders
+        };
+      }
+
+      const attackerBonus = els.attackerLeader.checked ? 1 : 0;
+      let defenderBonus = 0;
+      if (els.defenderLeader.checked) {
+        defenderBonus += 1;
+      }
+      if (els.defenderStronghold.checked) {
+        defenderBonus += 1;
+      }
+
+      let captures = 0;
+      let totalAttackersLeft = 0;
+      let totalDefendersLeft = 0;
+
+      for (let i = 0; i < iterations; i += 1) {
+        let simAttackers = state.attackers;
+        let simDefenders = state.defenders;
+        let guard = 0;
+
+        while (simAttackers >= 2 && simDefenders > 0 && guard < 500) {
+          const next = simulateBattleRound(simAttackers, simDefenders, attackerBonus, defenderBonus);
+          simAttackers = next.attackers;
+          simDefenders = next.defenders;
+          guard += 1;
+        }
+
+        if (simDefenders <= 0) {
+          captures += 1;
+        }
+
+        totalAttackersLeft += simAttackers;
+        totalDefendersLeft += Math.max(0, simDefenders);
+      }
+
+      return {
+        captureChance: captures / iterations,
+        holdChance: 1 - (captures / iterations),
+        avgAttackersLeft: totalAttackersLeft / iterations,
+        avgDefendersLeft: totalDefendersLeft / iterations
+      };
+    }
+
+    function updateLiveOdds() {
+      const isHidden = els.hideOdds && els.hideOdds.checked;
+      if (els.logOddsBox) {
+        els.logOddsBox.classList.toggle('is-hidden', isHidden);
+      }
+
+      if (isHidden) {
+        return;
+      }
+
+      const attackerColor = selectedArmyColor('attackerColor');
+      const defenderColor = selectedArmyColor('defenderColor');
+      const odds = estimateInvasionOdds();
+      const capturePct = Math.round(odds.captureChance * 100);
+      const holdPct = Math.round(odds.holdChance * 100);
+
+      els.logOddsMain.innerHTML = '<span class="label">Capture chance:</span>' +
+        '<span class="color-' + attackerColor + '">' + capturePct + '%</span>';
+
+      els.logOddsSub.innerHTML =
+        '<span class="color-' + attackerColor + '">' + armyLabel(attackerColor) + '</span> is favored to capture the territory ' + capturePct + '% of the time.<br>' +
+        '<span class="color-' + defenderColor + '">' + armyLabel(defenderColor) + '</span> holds ' + holdPct + '% of the time.<br>' +
+        'Average survivors from here: attacker <strong>' + odds.avgAttackersLeft.toFixed(1) + '</strong>, defender <strong>' + odds.avgDefendersLeft.toFixed(1) + '</strong>.';
     }
 
     function forceClass(color) {
@@ -805,6 +1276,15 @@
       return map[color] || 'Army';
     }
 
+    function stepInput(input, delta) {
+      const min = parseInt(input.min || '0', 10);
+      const max = parseInt(input.max || '999999', 10);
+      const current = parseInt(input.value || String(min), 10);
+      const next = clamp(current + delta, min, max);
+      input.value = next;
+      syncStateFromInputs(true);
+    }
+
     function syncStateFromInputs(resetBattleState = false) {
       state.attackers = clamp(parseInt(els.attackers.value || '2', 10), 2, 999);
       state.defenders = clamp(parseInt(els.defenders.value || '1', 10), 1, 999);
@@ -822,14 +1302,15 @@
         els.log.innerHTML = '';
         els.attackDiceRow.innerHTML = '';
         els.defenseDiceRow.innerHTML = '';
-        els.outcomeBox.textContent = 'Awaiting the first battle.';
+        setOutcome('Awaiting the first battle.');
       }
 
       updateView();
+      updateLiveOdds();
     }
 
     function legalAttackDice() {
-      return Math.min(3, state.attackers - 1);
+      return Math.min(3, Math.max(0, state.attackers - 1));
     }
 
     function legalDefenseDice() {
@@ -849,6 +1330,14 @@
       return die;
     }
 
+    function setOutcome(message, detail = '', tone = '', armyColor = '') {
+      els.battleResultBanner.textContent = message;
+      const toneClass = tone ? ' ' + tone : '';
+      const colorClass = armyColor ? ' color-' + armyColor : '';
+      els.battleResultBanner.className = 'battle-result-banner' + toneClass + colorClass;
+      els.battleResultDetail.innerHTML = detail;
+    }
+
     function updateView(lastRoll = null) {
       const attackerColor = selectedArmyColor('attackerColor');
       const defenderColor = selectedArmyColor('defenderColor');
@@ -856,8 +1345,6 @@
       els.defenderDisplay.textContent = armyLabel(defenderColor);
       els.attackerCount.textContent = state.attackers;
       els.defenderCount.textContent = state.defenders;
-      els.attackerAvailable.textContent = Math.max(0, state.attackers - 1);
-      els.defenderAvailable.textContent = Math.min(2, state.defenders);
 
       els.attackerPanel.className = 'side color-' + attackerColor;
       els.defenderPanel.className = 'side color-' + defenderColor;
@@ -868,11 +1355,24 @@
         els.defenseDiceRow.innerHTML = '';
         lastRoll.attackDiceRaw.forEach((value, index) => {
           const bonus = index === 0 ? lastRoll.attackerBonus : 0;
-          els.attackDiceRow.appendChild(createDieEl(value, false, bonus));
+          const die = createDieEl(value, false, bonus);
+          const comparison = lastRoll.comparisonResults && lastRoll.comparisonResults.find((item) => item.attackerIndex === index);
+          if (comparison) {
+            die.classList.add(comparison.winner === 'attacker' ? 'winner' : 'loser');
+          }
+          if (index === 2) {
+            die.classList.add('third-attack');
+          }
+          els.attackDiceRow.appendChild(die);
         });
         lastRoll.defenseDiceRaw.forEach((value, index) => {
           const bonus = index === 0 ? lastRoll.defenderBonus : 0;
-          els.defenseDiceRow.appendChild(createDieEl(value, true, bonus));
+          const die = createDieEl(value, true, bonus);
+          const comparison = lastRoll.comparisonResults && lastRoll.comparisonResults.find((item) => item.defenderIndex === index);
+          if (comparison) {
+            die.classList.add(comparison.winner === 'defender' ? 'winner' : 'loser');
+          }
+          els.defenseDiceRow.appendChild(die);
         });
       }
     }
@@ -886,17 +1386,17 @@
 
     function battleOnce() {
       if (state.territoryCaptured || state.invasionEnded) {
-        els.outcomeBox.textContent = 'The invasion is already over. Reset to begin a new one.';
+        setOutcome('The invasion is already over.', 'Reset to begin a new one.');
         return null;
       }
 
       if (state.attackers < 2) {
         state.invasionEnded = true;
-        els.outcomeBox.textContent = 'The attacker cannot continue. At least one battalion must remain in the origin territory.';
+        setOutcome('Attacker cannot continue.', 'At least one battalion must remain in the origin territory.', 'loss-attacker');
         return null;
       }
 
-      const attackDiceCount = Math.min(legalAttackDice(), state.attackers - 1);
+      const attackDiceCount = legalAttackDice();
       const defenseDiceCount = legalDefenseDice();
       const attackDiceRaw = Array.from({ length: attackDiceCount }, randDie).sort((a, b) => b - a);
       const defenseDiceRaw = Array.from({ length: defenseDiceCount }, randDie).sort((a, b) => b - a);
@@ -923,15 +1423,26 @@
       let attackerLosses = 0;
       let defenderLosses = 0;
       const compareLines = [];
+      const comparisonResults = [];
 
       for (let i = 0; i < comparisons; i += 1) {
         const a = attackDice[i];
         const d = defenseDice[i];
         if (a > d) {
           defenderLosses += 1;
+          comparisonResults.push({
+            attackerIndex: i,
+            defenderIndex: i,
+            winner: 'attacker'
+          });
           compareLines.push(`Compare ${i + 1}: ${a} beats ${d} — defender loses 1 battalion.`);
         } else {
           attackerLosses += 1;
+          comparisonResults.push({
+            attackerIndex: i,
+            defenderIndex: i,
+            winner: 'defender'
+          });
           compareLines.push(`Compare ${i + 1}: ${a} vs ${d} — defender wins ties, so attacker loses 1 battalion.`);
         }
       }
@@ -951,15 +1462,35 @@
         defenseDiceCount,
         attackerLosses,
         defenderLosses,
+        comparisonResults,
         compareLines
       };
 
       updateView(result);
+      updateLiveOdds();
 
       const attackerColor = selectedArmyColor('attackerColor');
+const defenderColor = selectedArmyColor('defenderColor');
+
+      let headline = '';
+      let headlineTone = '';
+      let headlineArmyColor = '';
+      if (attackerLosses > 0 && defenderLosses === 0) {
+        headline = `${armyLabel(attackerColor)} loses ${attackerLosses}`;
+        headlineTone = 'loss-attacker';
+        headlineArmyColor = attackerColor;
+      } else if (defenderLosses > 0 && attackerLosses === 0) {
+        headline = `${armyLabel(defenderColor)} loses ${defenderLosses}`;
+        headlineTone = 'loss-defender';
+        headlineArmyColor = defenderColor;
+      } else if (attackerLosses > 0 && defenderLosses > 0) {
+        headline = `${armyLabel(attackerColor)} loses ${attackerLosses} • ${armyLabel(defenderColor)} loses ${defenderLosses}`;
+      } else {
+        headline = 'No losses this round';
+      }
+
       const attackerStyled = `<span class="color-${attackerColor}">${armyLabel(attackerColor)}</span>`;
-      const defenderColor = selectedArmyColor('defenderColor');
-      const defenderStyled = `<span class="color-${defenderColor}">${armyLabel(defenderColor)}</span>`;
+const defenderStyled = `<span class="color-${defenderColor}">${armyLabel(defenderColor)}</span>`;
 
       let outcome = `${attackerStyled} rolled [${attackDice.join(', ')}] and ${defenderStyled} rolled [${defenseDice.join(', ')}].`;
       outcome += `<br>${compareLines.join('<br>')}`;
@@ -967,51 +1498,49 @@
       logEntry(`<strong>Battle ${state.battleNumber}</strong><br>${outcome}`, defenderLosses > attackerLosses ? 'win' : 'lose');
 
       if (state.defenders <= 0) {
-        state.territoryCaptured = true;
-        state.invasionEnded = true;
+  state.territoryCaptured = true;
+  state.invasionEnded = true;
 
-        const survivingCommitted = Math.max(0, state.lastBattleAttackersCommitted - state.lastBattleAttackerLosses);
-        const maxExtraMovable = Math.max(0, state.attackers - 1 - survivingCommitted);
-        const requestedExtra = clamp(parseInt(els.moveAfterCapture.value || '0', 10), 0, 999);
-        const actualExtra = Math.min(requestedExtra, maxExtraMovable);
-        const movedTotal = survivingCommitted + actualExtra;
-        state.movedAfterCapture = movedTotal;
-        state.attackers -= movedTotal;
+  const survivingCommitted = Math.max(0, state.lastBattleAttackersCommitted - state.lastBattleAttackerLosses);
+  state.movedAfterCapture = survivingCommitted;
 
-        els.outcomeBox.innerHTML = `
-          <strong>Territory conquered.</strong><br>
-          Surviving battalions from the final battle that must move in: <strong>${survivingCommitted}</strong>.<br>
-          Extra battalions moved in: <strong>${actualExtra}</strong>.<br>
-          Total moved into captured territory: <strong>${movedTotal}</strong>.<br>
-          Battalions remaining in original territory: <strong>${state.attackers}</strong>.
-        `;
+  setOutcome(
+    `${armyLabel(defenderColor)} loses ${defenderLosses}`,
+    `<strong>Territory conquered.</strong><br>
+    Surviving battalions from the final battle that move into the captured territory: <strong>${survivingCommitted}</strong>.`,
+    'loss-defender',
+    defenderColor
+  );
 
-        logEntry(`<strong>Capture</strong><br>The defender’s last battalion fell. ${survivingCommitted} surviving attackers from the last battle move in first, with ${actualExtra} extra battalions following.`, 'win');
-        updateView(result);
-      } else if (state.attackers < 2) {
-        state.invasionEnded = true;
-        els.outcomeBox.innerHTML = `<strong>Invasion halted.</strong><br>The attacker has only ${state.attackers} battalion left in the origin territory and cannot continue.`;
-      } else {
-        els.outcomeBox.innerHTML = `
-          <strong>Battle ${state.battleNumber} resolved.</strong><br>
-          ${armyLabel(attackerColor)} has <strong>${state.attackers}</strong> battalions in the origin territory.<br>
-          ${armyLabel(defenderColor)} has <strong>${state.defenders}</strong> battalions remaining.
-        `;
-      }
+  logEntry(`<strong>Capture</strong><br>The defender’s last battalion fell. ${survivingCommitted} surviving attackers from the last battle move into the captured territory.`, 'win');
+  updateView(result);
+} else if (state.attackers < 2) {
+  state.invasionEnded = true;
+  setOutcome(
+    `${armyLabel(attackerColor)} loses ${attackerLosses}`,
+    `<strong>Invasion halted.</strong><br>The attacker has only <strong>${state.attackers}</strong> battalion remaining in the invasion and cannot continue.`,
+    'loss-attacker',
+    attackerColor
+  );
+} else {
+  setOutcome(
+    headline,
+    `${armyLabel(attackerColor)} has <strong>${state.attackers}</strong> battalions remaining in the invasion.<br>
+    ${armyLabel(defenderColor)} has <strong>${state.defenders}</strong> battalions remaining.`,
+    headlineTone,
+    headlineArmyColor
+  );
+}
 
       els.attackers.value = state.attackers;
       els.defenders.value = Math.max(0, state.defenders);
+      updateLiveOdds();
       return result;
     }
 
     function resolveFullInvasion() {
-      if (!els.autoContinue.checked) {
-        battleOnce();
-        return;
-      }
-
       if (state.territoryCaptured || state.invasionEnded) {
-        els.outcomeBox.textContent = 'The invasion is already over. Reset to begin a new one.';
+        setOutcome('The invasion is already over.', 'Reset to begin a new one.');
         return;
       }
 
@@ -1022,17 +1551,13 @@
       }
     }
 
-    function resetScenario() {
-      syncStateFromInputs(true);
-    }
 
     [
       els.attackers,
       els.defenders,
       els.attackerLeader,
       els.defenderLeader,
-      els.defenderStronghold,
-      els.moveAfterCapture
+      els.defenderStronghold
     ].forEach((el) => {
       el.addEventListener('change', () => {
         syncStateFromInputs(true);
@@ -1042,14 +1567,26 @@
     document.querySelectorAll('input[name="attackerColor"], input[name="defenderColor"]').forEach((el) => {
       el.addEventListener('change', () => {
         updateView();
+        updateLiveOdds();
       });
     });
 
+    if (els.hideOdds) {
+      els.hideOdds.addEventListener('change', () => {
+        updateLiveOdds();
+      });
+    }
+
+    els.attackersDown.addEventListener('click', () => stepInput(els.attackers, -1));
+    els.attackersUp.addEventListener('click', () => stepInput(els.attackers, 1));
+    els.defendersDown.addEventListener('click', () => stepInput(els.defenders, -1));
+    els.defendersUp.addEventListener('click', () => stepInput(els.defenders, 1));
+
     els.rollBtn.addEventListener('click', battleOnce);
     els.resolveBtn.addEventListener('click', resolveFullInvasion);
-    els.resetBtn.addEventListener('click', resetScenario);
 
     syncStateFromInputs(true);
   </script>
 </body>
+
 </html>
